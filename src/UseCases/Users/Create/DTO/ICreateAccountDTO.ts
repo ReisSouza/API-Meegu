@@ -1,10 +1,12 @@
 import { Transform } from 'class-transformer';
+
 import {
-  IsBoolean,
-  IsDate,
-  IsNotEmpty,
-  IsString,
   Length,
+  IsDate,
+  IsString,
+  IsBoolean,
+  MaxLength,
+  IsNotEmpty,
 } from 'class-validator';
 
 export class ICreateUserDTO {
@@ -35,5 +37,6 @@ export class ICreateUserDTO {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(8)
   zipcode: string;
 }
