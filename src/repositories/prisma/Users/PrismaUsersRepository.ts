@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import {
   ICreateUser,
   IGetUserByEmail,
+  IGetUserById,
   UsersRepository,
 } from './IPrismaUsersRepository';
 import { PrismaService } from 'src/database/prisma.service';
@@ -17,6 +18,15 @@ export class PrismaUsersRepository implements UsersRepository {
     const resultGet = await this.prisma.users.findUnique({
       where: {
         email: data.email,
+      },
+    });
+
+    return resultGet;
+  }
+  async getById(data: IGetUserById): Promise<Users> {
+    const resultGet = await this.prisma.users.findUnique({
+      where: {
+        id: data.id,
       },
     });
 
