@@ -1,24 +1,24 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './database/prisma.service';
-import { UsersRepository } from './repositories/rocket-members-repository';
-import { PrismaUsersRepository } from './repositories/prisma/prisma-rocket-members-repository';
-import { AppController } from './UseCases/Users/Create/CreateAccount.controller';
+import { CreateAccountController } from './UseCases/Users/Create/CreateAccount.controller';
 import { CreateAccountUseCase } from './UseCases/Users/Create/CreateAccount.UseCase';
 import { HttpModule } from '@nestjs/axios';
 import { HttpModuleService } from './infra/HttpModule';
+import { PrismaUsersRepository } from './repositories/prisma/Users/PrismaUsersRepository';
+import { UsersRepository } from './repositories/prisma/Users/IPrismaUsersRepository';
 
 @Module({
   imports: [HttpModule],
 
-  controllers: [AppController],
+  controllers: [CreateAccountController],
   providers: [
     PrismaService,
     CreateAccountUseCase,
     HttpModuleService,
 
     {
-      provide: UsersRepository, // quando alguém usar esse
-      useClass: PrismaUsersRepository, // aplica essa dependência
+      provide: UsersRepository,
+      useClass: PrismaUsersRepository,
     },
   ],
 })

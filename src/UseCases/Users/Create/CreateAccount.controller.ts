@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ICreateUserDTO } from './DTO/ICreateUsersDTO';
+import { ICreateUserDTO } from './DTO/ICreateAccountDTO';
 import { CreateAccountUseCase } from './CreateAccount.UseCase';
 
 @Controller('account')
-export class AppController {
+export class CreateAccountController {
   constructor(private createAccountUseCase: CreateAccountUseCase) {}
 
   @Post('')
