@@ -7,6 +7,7 @@ import {
   UsersRepository,
 } from './IPrismaUsersRepository';
 import { PrismaService } from 'src/database/prisma.service';
+import { IGetAccountsDTO } from 'src/UseCases/Users/Get/DTO/IGetAccountsDTO';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -16,6 +17,18 @@ export class PrismaUsersRepository implements UsersRepository {
     const resultGet = await this.prisma.users.findUnique({
       where: {
         email: data.email,
+      },
+    });
+
+    return resultGet;
+  }
+
+  async getAll(data: IGetAccountsDTO): Promise<Users[]> {
+    const resultGet = await this.prisma.users.findMany({
+      where: {
+        name: {
+          contains: data?.name,
+        },
       },
     });
 
