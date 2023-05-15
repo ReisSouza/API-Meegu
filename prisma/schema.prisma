@@ -15,7 +15,7 @@ model Users {
   birthdate                  DateTime
   document                   String?
   acceptedTermsAndConditions Boolean
-  zipcode                    BigInt
+  zipcode                    Int
   street                     String?
   neighborhood               String?
   city                       String?

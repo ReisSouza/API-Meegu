@@ -1,4 +1,5 @@
 import { Users } from '@prisma/client';
+import { IGetAccountsDTO } from 'src/UseCases/Users/Get/DTO/IGetAccountsDTO';
 
 export interface ICreateUser {
   email: string;
@@ -21,4 +22,5 @@ export interface IGetUserByEmail {
 export abstract class UsersRepository {
   abstract create(data: ICreateUser): Promise<void>;
   abstract getByEmail(data: IGetUserByEmail): Promise<Users>;
+  abstract getAll(data?: IGetAccountsDTO): Promise<Users[]>;
 }
