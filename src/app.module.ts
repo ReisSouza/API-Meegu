@@ -8,16 +8,23 @@ import { PrismaUsersRepository } from './repositories/prisma/Users/PrismaUsersRe
 import { UsersRepository } from './repositories/prisma/Users/IPrismaUsersRepository';
 import { GetAccountsUseCase } from './UseCases/Users/Get/GetAccounts.UseCase';
 import { GetAccountsController } from './UseCases/Users/Get/GetAccounts.controller';
+import { GetAccountByIdUseCase } from './UseCases/Users/GetByIdAccount/GetByIdAccount.UseCase';
+import { GetAccountByIdController } from './UseCases/Users/GetByIdAccount/GetByIdAccount.controller';
 
 @Module({
   imports: [HttpModule],
 
-  controllers: [CreateAccountController, GetAccountsController],
+  controllers: [
+    CreateAccountController,
+    GetAccountsController,
+    GetAccountByIdController,
+  ],
   providers: [
+    GetAccountByIdUseCase,
+    GetAccountsUseCase,
     PrismaService,
     CreateAccountUseCase,
     HttpModuleService,
-    GetAccountsUseCase,
     {
       provide: UsersRepository,
       useClass: PrismaUsersRepository,

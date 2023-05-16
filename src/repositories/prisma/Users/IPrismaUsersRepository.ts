@@ -19,8 +19,13 @@ export interface IGetUserByEmail {
   email: string;
 }
 
+export interface IGetUserById {
+  id: string;
+}
+
 export abstract class UsersRepository {
   abstract create(data: ICreateUser): Promise<void>;
   abstract getByEmail(data: IGetUserByEmail): Promise<Users>;
   abstract getAll(data?: IGetAccountsDTO): Promise<Users[]>;
+  abstract getById(data: IGetUserById): Promise<Users>;
 }
