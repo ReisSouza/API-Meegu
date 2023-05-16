@@ -5,4 +5,10 @@ export class IGetAccountsDTO {
   @IsString()
   @IsOptional()
   name: string;
+
+  @IsOptional()
+  page?: number;
+
+  @IsOptional()
+  pageSize?: number;
 }

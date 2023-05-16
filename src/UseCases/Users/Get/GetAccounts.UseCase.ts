@@ -7,9 +7,11 @@ import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepos
 export class GetAccountsUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
-  async execute({ name }: IGetAccountsDTO) {
+  async execute({ name, page, pageSize }: IGetAccountsDTO) {
     const resultGet = await this.usersRepository.getAll({
       name,
+      page,
+      pageSize,
     });
 
     return {

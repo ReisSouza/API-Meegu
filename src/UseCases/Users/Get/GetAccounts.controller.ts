@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 
 import { IGetAccountsDTO } from './DTO/IGetAccountsDTO';
 import { GetAccountsUseCase } from './GetAccounts.UseCase';
@@ -8,11 +8,13 @@ export class GetAccountsController {
   constructor(private getAccountsUseCase: GetAccountsUseCase) {}
 
   @Get('')
-  async GetAccounts(@Body() body: IGetAccountsDTO) {
-    const { name } = body;
+  async GetAccounts(@Query() query: IGetAccountsDTO) {
+    const { name, page, pageSize } = query;
 
     const resultGet = await this.getAccountsUseCase.execute({
       name,
+      page,
+      pageSize,
     });
 
     return resultGet;

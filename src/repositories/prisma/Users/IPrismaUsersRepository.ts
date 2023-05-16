@@ -15,6 +15,20 @@ interface ICreateUser {
   city: string;
   state: string;
 }
+
+interface IUpdateUser {
+  email?: string;
+  name?: string;
+  birthdate?: Date;
+  document?: string;
+  zipcode?: number;
+  street?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  id: string;
+}
+
 export interface IGetUserByEmail {
   email: string;
 }
@@ -24,6 +38,14 @@ export interface IGetUserById {
 export interface IDeleteById {
   id: string;
 }
+export interface IUpdated {
+  id: string;
+}
+
+export interface IVerifyIfEmailEqualWithId {
+  id: string;
+  email: string;
+}
 
 export abstract class UsersRepository {
   abstract create(data: ICreateUser): Promise<void>;
@@ -31,4 +53,8 @@ export abstract class UsersRepository {
   abstract getByEmail(data: IGetUserByEmail): Promise<Users>;
   abstract getById(data: IGetUserById): Promise<Users>;
   abstract deleteById(data: IDeleteById): Promise<void>;
+  abstract updated(data: IUpdateUser): Promise<Users>;
+  abstract VerifyIfEmailEqualWithId(
+    data: IVerifyIfEmailEqualWithId,
+  ): Promise<Users>;
 }

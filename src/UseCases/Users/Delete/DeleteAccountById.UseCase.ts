@@ -10,7 +10,7 @@ export class DeleteAccountByIdUseCase {
   async execute({ id, accessToken }: IDeleteAccountByIdDTO) {
     const isValidToken = accessToken?.split(' ')[1];
 
-    if (isValidToken !== process.env.SECRET_DELETE) {
+    if (isValidToken !== process.env.SECRET_TOKEN) {
       throw new NotFoundException('Usuário não tem autorização');
     }
 
