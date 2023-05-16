@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-
-import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+
 import { IViaCepResponse } from './types';
 
 @Injectable()

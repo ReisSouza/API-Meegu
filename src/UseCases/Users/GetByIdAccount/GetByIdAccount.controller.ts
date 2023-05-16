@@ -1,4 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
+
 import { IGetAccountByIdDTO } from './DTO/IGetByIdAccountDTO';
 import { GetAccountByIdUseCase } from './GetByIdAccount.UseCase';
 

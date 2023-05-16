@@ -2,10 +2,10 @@ import { Users } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 
 import {
-  ICreateUser,
   IGetUserByEmail,
-  IGetUserById,
   UsersRepository,
+  IGetUserById,
+  IDeleteById,
 } from './IPrismaUsersRepository';
 import { PrismaService } from 'src/database/prisma.service';
 import { IGetAccountsDTO } from 'src/UseCases/Users/Get/DTO/IGetAccountsDTO';
@@ -13,20 +13,28 @@ import { IGetAccountsDTO } from 'src/UseCases/Users/Get/DTO/IGetAccountsDTO';
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private prisma: PrismaService) {}
+  async deleteById(data: IDeleteById): Promise<void> {
+    await this.prisma.users.delete({
+      where: {
+        id: data.id,
+      },
+    });
+  }
 
-  async getByEmail(data: IGetUserByEmail): Promise<Users> {
+  async getById(data: IGetUserById): Promise<Users> {
     const resultGet = await this.prisma.users.findUnique({
       where: {
-        email: data.email,
+        id: data.id,
       },
     });
 
     return resultGet;
   }
-  async getById(data: IGetUserById): Promise<Users> {
+
+  async getByEmail(data: IGetUserByEmail): Promise<Users> {
     const resultGet = await this.prisma.users.findUnique({
       where: {
-        id: data.id,
+        email: data.email,
       },
     });
 
@@ -45,7 +53,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return resultGet;
   }
 
-  async create(data: ICreateUser): Promise<void> {
+  async create(data: Users): Promise<void> {
     await this.prisma.users.create({
       data: { ...data },
     });
