@@ -1,6 +1,7 @@
-import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepository';
-import { IGetAccountsDTO } from './DTO/IGetAccountsDTO';
 import { Injectable } from '@nestjs/common';
+
+import { IGetAccountsDTO } from './DTO/IGetAccountsDTO';
+import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepository';
 
 @Injectable()
 export class GetAccountsUseCase {

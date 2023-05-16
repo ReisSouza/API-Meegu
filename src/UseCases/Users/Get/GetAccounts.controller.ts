@@ -1,4 +1,5 @@
 import { Body, Controller, Get } from '@nestjs/common';
+
 import { IGetAccountsDTO } from './DTO/IGetAccountsDTO';
 import { GetAccountsUseCase } from './GetAccounts.UseCase';
 
