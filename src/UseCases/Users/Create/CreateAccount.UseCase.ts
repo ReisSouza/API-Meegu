@@ -52,7 +52,7 @@ export class CreateAccountUseCase {
     });
 
     return {
-      message: 'success',
+      message: 'Usuário cadastrado com sucesso!',
     };
   }
 }
