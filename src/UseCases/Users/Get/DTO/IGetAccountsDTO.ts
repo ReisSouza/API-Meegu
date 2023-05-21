@@ -7,8 +7,8 @@ export class IGetAccountsDTO {
   name: string;
 
   @IsOptional()
-  page?: number;
+  page: number;
 
   @IsOptional()
-  pageSize?: number;
+  pageSize: number;
 }

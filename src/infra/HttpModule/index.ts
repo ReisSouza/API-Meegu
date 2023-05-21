@@ -1,19 +1,25 @@
-import { lastValueFrom } from 'rxjs';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
-import { IViaCepResponse } from './types';
+import { HttpModuleServiceMethods, IViaCepResponse } from './types';
 
 @Injectable()
-export class HttpModuleService {
+export class HttpModuleService implements HttpModuleServiceMethods {
   constructor(private readonly httpService: HttpService) {}
 
   async getAddressByCep(cep: string): Promise<IViaCepResponse> {
-    const url = `https://viacep.com.br/ws/${cep}/json/`;
+    try {
+      const url = `https://viacep.com.br/ws/${cep}/json/`;
 
-    const responseGet = this.httpService.get(url);
-    const response = await lastValueFrom(responseGet);
+      const responseGet = this.httpService.get(url);
+      const response = await lastValueFrom(responseGet);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      if (error.response.status) {
+        throw new NotFoundException('Cep não encontrado');
+      }
+    }
   }
 }

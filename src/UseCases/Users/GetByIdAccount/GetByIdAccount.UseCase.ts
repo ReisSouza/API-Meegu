@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { IGetAccountByIdDTO } from './DTO/IGetByIdAccountDTO';
-import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepository';
+import { IUsersRepository } from '../../../repositories/Users/IPrismaUsersRepository';
 
 @Injectable()
 export class GetAccountByIdUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
 
   async execute({ id }: IGetAccountByIdDTO) {
     const resultGet = await this.usersRepository.getById({ id });

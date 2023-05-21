@@ -1,9 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
-
 import { ICreateUserDTO } from './DTO/ICreateAccountDTO';
 import { CreateAccountUseCase } from './CreateAccount.UseCase';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('account')
+@ApiTags('Account')
+@Controller('accounts')
 export class CreateAccountController {
   constructor(private createAccountUseCase: CreateAccountUseCase) {}
 

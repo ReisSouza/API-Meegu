@@ -1,15 +1,15 @@
 import * as dayjs from 'dayjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { HttpModuleService } from 'src/infra/HttpModule';
 import { ICreateUserDTO } from './DTO/ICreateAccountDTO';
-import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepository';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpModuleServiceMethods } from '../../../infra/HttpModule/types';
+import { IUsersRepository } from '../../../repositories/Users/IPrismaUsersRepository';
 
 @Injectable()
 export class CreateAccountUseCase {
   constructor(
-    private httpModuleService: HttpModuleService,
-    private usersRepository: UsersRepository,
+    private httpModuleService: HttpModuleServiceMethods,
+    private usersRepository: IUsersRepository,
   ) {}
 
   async execute({
@@ -28,16 +28,14 @@ export class CreateAccountUseCase {
     const resultGetByEmail = await this.usersRepository.getByEmail({
       email,
     });
-
     if (resultGetByEmail) {
       throw new NotFoundException('Usuário com este email já existe');
     }
-
     const resGetAddressByCep = await this.httpModuleService.getAddressByCep(
       zipcode,
     );
 
-    await this.usersRepository.create({
+    const resultCreate = await this.usersRepository.create({
       neighborhood: resGetAddressByCep.bairro,
       street: resGetAddressByCep.logradouro,
       city: resGetAddressByCep.localidade,
@@ -52,7 +50,8 @@ export class CreateAccountUseCase {
     });
 
     return {
-      message: 'Usuário cadastrado com sucesso!',
+      message: 'Usuário criado com sucesso!',
+      id: resultCreate.id,
     };
   }
 }

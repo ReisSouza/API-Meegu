@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
-
+import { IUsersRepository } from '../../../repositories/Users/IPrismaUsersRepository';
 import { IGetAccountsDTO } from './DTO/IGetAccountsDTO';
-import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepository';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class GetAccountsUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
 
   async execute({ name, page, pageSize }: IGetAccountsDTO) {
     const resultGet = await this.usersRepository.getAll({

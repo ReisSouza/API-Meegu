@@ -1,8 +1,8 @@
 import { Controller, Delete, Param, Req } from '@nestjs/common';
-import { IDeleteAccountByIdDTO } from './DTO/IDeleteAccountByIdDTO';
-import { DeleteAccountByIdUseCase } from './DeleteAccountById.UseCase';
+import { IDeleteAccountManyByIdDTO } from './DTO/IDeleteAccountByIdDTO';
 import { Request } from 'express';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { DeleteAccountByIdUseCase } from '../Delete/DeleteAccountById.UseCase';
 
 @Controller('accounts')
 @ApiTags('Account')
@@ -12,14 +12,14 @@ export class DeleteAccountByIdController {
   @Delete(':id')
   @ApiParam({ name: 'id', required: true, type: String })
   async GetAccounts(
-    @Param() Params: IDeleteAccountByIdDTO,
+    @Param() Params: IDeleteAccountManyByIdDTO,
     @Req() request: Request,
   ) {
-    const { id } = Params;
+    const { ids } = Params;
     const accessToken = request.headers.authorization;
 
     const resultDelete = await this.deleteAccountByIdUseCase.execute({
-      id,
+      ids,
       accessToken,
     });
 

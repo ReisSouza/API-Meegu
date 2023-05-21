@@ -1,27 +1,36 @@
-import { Request } from 'express';
-import { Body, Controller, Put, Req } from '@nestjs/common';
-
-import { IUpdateUserDTO } from './DTO/IUpdateAccountDTO';
+import { Body, Controller, Put, Param } from '@nestjs/common';
+import { IUpdateAccountDTO } from './DTO/IUpdateAccountDTO';
 import { UpdateAccountUseCase } from './UpdateAccount.UseCase';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
-@Controller('account')
+@ApiTags('Account')
+@Controller('accounts')
 export class UpdateAccountController {
   constructor(private updateAccountUseCase: UpdateAccountUseCase) {}
 
-  @Put()
-  async UpdateAccount(@Body() body: IUpdateUserDTO, @Req() request: Request) {
-    const { birthdate, document, zipcode, email, name, id } = body;
-
-    const accessToken = request.headers.authorization;
-
-    const resultUpdate = await this.updateAccountUseCase.execute({
+  @Put(':id')
+  @ApiParam({ name: 'id', required: true, type: String })
+  async UpdateAccount(
+    @Body() body: IUpdateAccountDTO,
+    @Param() Params: { id: string },
+  ) {
+    const {
+      acceptedTermsAndConditions,
       birthdate,
       document,
       zipcode,
       email,
       name,
-      id,
-      accessToken,
+    } = body;
+
+    const resultUpdate = await this.updateAccountUseCase.execute({
+      acceptedTermsAndConditions,
+      id: Params.id,
+      birthdate,
+      document,
+      zipcode,
+      email,
+      name,
     });
 
     return resultUpdate;

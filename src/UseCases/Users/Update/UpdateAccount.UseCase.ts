@@ -1,42 +1,28 @@
 import * as dayjs from 'dayjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { HttpModuleService } from 'src/infra/HttpModule';
-import { IUpdateUserDTO } from './DTO/IUpdateAccountDTO';
-import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepository';
+import { IUpdateAccountDTO } from './DTO/IUpdateAccountDTO';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { IUsersRepository } from '../../../repositories/Users/IPrismaUsersRepository';
+import { HttpModuleServiceMethods } from '../../../infra/HttpModule/types';
 
 @Injectable()
 export class UpdateAccountUseCase {
   constructor(
-    private httpModuleService: HttpModuleService,
-    private usersRepository: UsersRepository,
+    private httpModuleService: HttpModuleServiceMethods,
+    private usersRepository: IUsersRepository,
   ) {}
 
   async execute({
-    accessToken,
+    acceptedTermsAndConditions,
     birthdate,
     document,
     zipcode,
     email,
     name,
     id,
-  }: IUpdateUserDTO) {
-    const isValidToken = accessToken?.split(' ')[1];
-
-    if (isValidToken !== process.env.SECRET_TOKEN) {
-      throw new NotFoundException('Usuário não tem autorização');
-    }
-
+  }: IUpdateAccountDTO) {
     if (dayjs().diff(birthdate, 'year') < 18) {
       throw new NotFoundException('Você precisa ter 18 anos');
-    }
-
-    const resultGetByID = await this.usersRepository.getById({
-      id,
-    });
-
-    if (!resultGetByID) {
-      throw new NotFoundException('Usuário com este id não existe');
     }
 
     const resultGetByEmail =
@@ -44,7 +30,6 @@ export class UpdateAccountUseCase {
         email,
         id,
       });
-
     if (resultGetByEmail) {
       throw new NotFoundException('Usuário com este email já existe');
     }
@@ -53,12 +38,13 @@ export class UpdateAccountUseCase {
       zipcode,
     );
 
-    const resultUpdate = await this.usersRepository.updated({
+    await this.usersRepository.update({
       neighborhood: resGetAddressByCep.bairro,
       street: resGetAddressByCep.logradouro,
       city: resGetAddressByCep.localidade,
       birthdate: new Date(birthdate),
       state: resGetAddressByCep.uf,
+      acceptedTermsAndConditions,
       zipcode: Number(zipcode),
       document,
       email,
@@ -68,7 +54,6 @@ export class UpdateAccountUseCase {
 
     return {
       message: 'Usuário atualizado com sucesso!',
-      account: resultUpdate,
     };
   }
 }
