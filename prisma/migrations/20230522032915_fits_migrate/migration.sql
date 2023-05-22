@@ -7,7 +7,7 @@ CREATE TABLE `users` (
     `birthdate` DATETIME(3) NOT NULL,
     `document` VARCHAR(191) NULL,
     `acceptedTermsAndConditions` BOOLEAN NOT NULL,
-    `zipcode` BIGINT NOT NULL,
+    `zipcode` INTEGER NOT NULL,
     `street` VARCHAR(191) NULL,
     `neighborhood` VARCHAR(191) NULL,
     `city` VARCHAR(191) NULL,
