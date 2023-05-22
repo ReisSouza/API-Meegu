@@ -23,11 +23,12 @@ export class PrismaUsersRepositoryInMemory implements IUsersRepository {
     return this.users.length;
   }
   async update(data: IUpdateUser): Promise<void> {
-    this.users = this.users.filter((item) => item.id !== data.id);
+    const user = this.users.find((item) => item.id !== data.id);
     this.users.push({
       ...data,
       updatedAt: new Date(),
       createdAt: new Date(),
+      password: user.password,
     });
   }
 
