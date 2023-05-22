@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { IUsersRepository } from '../../../repositories/Users/IPrismaUsersRepository';
 import { IDeleteAccountByIdDTO } from './DTO/IDeleteAccountByIdDTO';
-import { UsersRepository } from 'src/repositories/prisma/Users/IPrismaUsersRepository';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class DeleteAccountByIdUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
 
   async execute({ id, accessToken }: IDeleteAccountByIdDTO) {
     const isValidToken = accessToken?.split(' ')[1];
@@ -23,7 +22,7 @@ export class DeleteAccountByIdUseCase {
     await this.usersRepository.deleteById({ id });
 
     return {
-      message: 'success',
+      message: 'Usuário deletado com sucesso!',
     };
   }
 }

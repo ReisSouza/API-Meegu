@@ -9,7 +9,7 @@ import {
   IsNotEmpty,
 } from 'class-validator';
 
-export class ICreateUserDTO {
+export class IUpdateAccountDTO {
   @IsNotEmpty()
   @Length(2, 100)
   @IsString()
@@ -20,11 +20,6 @@ export class ICreateUserDTO {
   @IsString()
   @ApiProperty({ example: 'reis@gmail.com' })
   email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty({ example: '123456' })
-  password: string;
 
   @IsNotEmpty()
   @IsDate()
@@ -46,4 +41,6 @@ export class ICreateUserDTO {
   @MaxLength(8)
   @ApiProperty({ example: '01310904' })
   zipcode: string;
+
+  id: string;
 }

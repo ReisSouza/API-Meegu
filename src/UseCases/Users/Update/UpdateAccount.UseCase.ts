@@ -1,12 +1,12 @@
 import * as dayjs from 'dayjs';
 
-import { ICreateUserDTO } from './DTO/ICreateAccountDTO';
+import { IUpdateAccountDTO } from './DTO/IUpdateAccountDTO';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { HttpModuleServiceMethods } from '../../../infra/HttpModule/types';
 import { IUsersRepository } from '../../../repositories/Users/IPrismaUsersRepository';
+import { HttpModuleServiceMethods } from '../../../infra/HttpModule/types';
 
 @Injectable()
-export class CreateAccountUseCase {
+export class UpdateAccountUseCase {
   constructor(
     private httpModuleService: HttpModuleServiceMethods,
     private usersRepository: IUsersRepository,
@@ -15,27 +15,30 @@ export class CreateAccountUseCase {
   async execute({
     acceptedTermsAndConditions,
     birthdate,
-    password,
     document,
     zipcode,
     email,
     name,
-  }: ICreateUserDTO) {
+    id,
+  }: IUpdateAccountDTO) {
     if (dayjs().diff(birthdate, 'year') < 18) {
       throw new NotFoundException('Você precisa ter 18 anos');
     }
 
-    const resultGetByEmail = await this.usersRepository.getByEmail({
-      email,
-    });
+    const resultGetByEmail =
+      await this.usersRepository.VerifyIfEmailEqualWithId({
+        email,
+        id,
+      });
     if (resultGetByEmail) {
       throw new NotFoundException('Usuário com este email já existe');
     }
+
     const resGetAddressByCep = await this.httpModuleService.getAddressByCep(
       zipcode,
     );
 
-    const resultCreate = await this.usersRepository.create({
+    await this.usersRepository.update({
       neighborhood: resGetAddressByCep.bairro,
       street: resGetAddressByCep.logradouro,
       city: resGetAddressByCep.localidade,
@@ -44,14 +47,13 @@ export class CreateAccountUseCase {
       acceptedTermsAndConditions,
       zipcode: Number(zipcode),
       document,
-      password,
       email,
       name,
+      id,
     });
 
     return {
-      message: 'Usuário criado com sucesso!',
-      id: resultCreate.id,
+      message: 'Usuário atualizado com sucesso!',
     };
   }
 }
